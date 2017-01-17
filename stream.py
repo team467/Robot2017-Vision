@@ -19,7 +19,6 @@ class CamHandler(BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header('Content-type','multipart/x-mixed-replace; boundary=--jpgboundary')
 			self.end_headers()
-			red = 255
 			last_time = time.time()*1000
 			while True:
 				time.sleep(1.0/30)
@@ -28,9 +27,11 @@ class CamHandler(BaseHTTPRequestHandler):
 					if not rc:
 						continue
 					p.process(img)
-					cv2.drawContours(img, p.filter_contours_output, -1, (0,255,red), 3)
+					cv2.drawContours(img, p.filter_contours_output, -1, (0,255,0), 3)
+					for contour in p.filter_contours_output:
+						x,y,w,h = cv2.boundingRect(contour)
+    					cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
 					print(len(p.filter_contours_output))
-					red = (red+50)%256
 					r, buf = cv2.imencode(".jpg",img)
 					self.wfile.write("--jpgboundary\r\n")
 					self.send_header('Content-type','image/jpeg')
