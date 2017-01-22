@@ -12,9 +12,9 @@ class GripPipeline:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsl_threshold_hue = [49.26401605042708, 65.55769757379923]
-        self.__hsl_threshold_saturation = [20.638489208633093, 36.3667232597623]
-        self.__hsl_threshold_luminance = [226.7594198091169, 234.48298798343993]
+        self.__hsl_threshold_hue = [67.98561151079136, 83.73514431239389]
+        self.__hsl_threshold_saturation = [135.29676258992808, 255.0]
+        self.__hsl_threshold_luminance = [0.0, 114.29541595925298]
 
         self.hsl_threshold_output = None
 
@@ -28,17 +28,17 @@ class GripPipeline:
         self.convex_hulls_output = None
 
         self.__filter_contours_contours = self.convex_hulls_output
-        self.__filter_contours_min_area = 0
-        self.__filter_contours_min_perimeter = 0
-        self.__filter_contours_min_width = 100.0
-        self.__filter_contours_max_width = 1000
-        self.__filter_contours_min_height = 20.0
-        self.__filter_contours_max_height = 1000
+        self.__filter_contours_min_area = 0.0
+        self.__filter_contours_min_perimeter = 0.0
+        self.__filter_contours_min_width = 0.0
+        self.__filter_contours_max_width = 1000.0
+        self.__filter_contours_min_height = 10.0
+        self.__filter_contours_max_height = 1000.0
         self.__filter_contours_solidity = [0.0, 100.0]
         self.__filter_contours_max_vertices = 1000000.0
         self.__filter_contours_min_vertices = 0.0
-        self.__filter_contours_min_ratio = 0
-        self.__filter_contours_max_ratio = 1000
+        self.__filter_contours_min_ratio = 0.0
+        self.__filter_contours_max_ratio = 1000.0
 
         self.filter_contours_output = None
 
@@ -141,10 +141,10 @@ class GripPipeline:
                 continue
             if (cv2.arcLength(contour, True) < min_perimeter):
                 continue
-            hull = cv2.convexHull(contour)
-            solid = 100 * area / cv2.contourArea(hull)
-            if (solid < solidity[0] or solid > solidity[1]):
-                continue
+#             hull = cv2.convexHull(contour)
+#             solid = 100 * area / cv2.contourArea(hull)
+#             if (solid < solidity[0] or solid > solidity[1]):
+#                 continue
             if (len(contour) < min_vertex_count or len(contour) > max_vertex_count):
                 continue
             ratio = (float)(w) / h
