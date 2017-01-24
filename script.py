@@ -6,20 +6,19 @@ NetworkTables.initialize(server='10.0.1.2')
 table = NetworkTables.getTable('SmartDashboard')
 
 import cv2
-cam = cv2.VideoCapture(0)
-cam.set(cv2.cv.CV_CAP_PROP_EXPOSURE, 0.1);
-
 import time
 import math
+import os
 
 FOVTangent = math.tan(math.radians(26))
 
 # f = open('dataFile', 'r+')
-
+capture = None
+initCamera()
 last_time = time.time()*1000
 for i in range(1000):
 	time.sleep(1.0/30)
-	res, image = cam.read()
+	res, image = capture.read()
 	p.process(image)
 	contours = p.filter_contours_output
 	if len(contours) = 1:
@@ -39,3 +38,10 @@ for i in range(1000):
 	last_time = now
 	
 # print(f.read())
+
+def initCamera():
+	os.system("v4l2-ctl -c exposure_auto=1 -c exposure_absolute=5")
+	global capture
+	capture = cv2.VideoCapture(0)
+	capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640); 
+	capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480);

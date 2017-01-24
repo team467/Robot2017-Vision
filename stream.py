@@ -64,11 +64,15 @@ class CamHandler(BaseHTTPRequestHandler):
 			self.wfile.write('</body></html>')
 			return
 
-def main():
+def initCamera():
+	os.system("v4l2-ctl -c exposure_auto=1 -c exposure_absolute=5")
 	global capture
 	capture = cv2.VideoCapture(0)
 	capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640); 
 	capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480);
+
+def main():
+	initCamera()
 	try:
 		server = HTTPServer(('',9090),CamHandler)
 		print "server started"
