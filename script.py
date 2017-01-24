@@ -2,7 +2,7 @@ from grip import GripPipeline
 p = GripPipeline()
 
 from networktables import NetworkTables
-NetworkTables.initialize(server='10.0.1.2')
+NetworkTables.initialize(server='10.0.1.16')
 table = NetworkTables.getTable('SmartDashboard')
 
 import cv2
@@ -13,6 +13,13 @@ import os
 FOVTangent = math.tan(math.radians(26))
 focalLength = 360/FOVTangent
 
+def initCamera():
+	os.system("v4l2-ctl -c exposure_auto=1 -c exposure_absolute=5")
+	global capture
+	capture = cv2.VideoCapture(0)
+	capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640); 
+	capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480);
+
 # f = open('dataFile', 'r+')
 capture = None
 initCamera()
@@ -22,7 +29,7 @@ for i in range(1000):
 	res, image = capture.read()
 	p.process(image)
 	contours = p.filter_contours_output
-	if len(contours) = 1:
+	if len(contours) == 1:
 		x,y,w,h = cv2.boundingRect(contours[0])
 		center = x + w/2
 # 		angle = (center - 640)*26/640
@@ -39,10 +46,3 @@ for i in range(1000):
 	last_time = now
 	
 # print(f.read())
-
-def initCamera():
-	os.system("v4l2-ctl -c exposure_auto=1 -c exposure_absolute=5")
-	global capture
-	capture = cv2.VideoCapture(0)
-	capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640); 
-	capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480);
