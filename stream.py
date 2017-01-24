@@ -9,6 +9,7 @@ p = GripPipeline()
 import cv2
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import time
+import math
 
 capture=None
 
@@ -32,7 +33,8 @@ class CamHandler(BaseHTTPRequestHandler):
 						x,y,w,h = cv2.boundingRect(contour)
 						cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
 						center = x + w/2
-						angle = (center - 320)*26/320
+# 						angle = (center - 320)*26/320
+						angle = math.degrees(math.atan((center - 320) * math.tan(math.radians(26)) / 320))
 						print(angle)
 # 					print(len(p.filter_contours_output))
 					r, buf = cv2.imencode(".jpg",img)
