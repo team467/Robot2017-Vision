@@ -11,6 +11,7 @@ import math
 import os
 
 FOVTangent = math.tan(math.radians(26))
+focalLength = 360/FOVTangent
 
 # f = open('dataFile', 'r+')
 capture = None
@@ -25,7 +26,7 @@ for i in range(1000):
 		x,y,w,h = cv2.boundingRect(contours[0])
 		center = x + w/2
 # 		angle = (center - 640)*26/640
-		angle = math.degrees(math.atan((center - 320) * FOVTangent / 320))
+		angle = math.degrees(math.atan((center - 320) / focalLength))
 		table.putNumber("x", x)
 		table.putNumber("y", y)
 		table.putNumber("w", w)

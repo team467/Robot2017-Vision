@@ -13,6 +13,7 @@ import math
 import os
 
 FOVTangent = math.tan(math.radians(26))
+focalLength = 360/FOVTangent
 
 capture=None
 
@@ -39,7 +40,7 @@ class CamHandler(BaseHTTPRequestHandler):
 						cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
 						center = x + w/2
 # 						angle = (center - 320)*26/320
-						angle = math.degrees(math.atan((center - 320) * FOVTangent / 320))
+						angle = math.degrees(math.atan((center - 320) / focalLength))
 						print(angle)
 # 					print(len(p.filter_contours_output))
 					r, buf = cv2.imencode(".jpg",img)
