@@ -12,6 +12,8 @@ cam.set(cv2.cv.CV_CAP_PROP_EXPOSURE, 0.1);
 import time
 import math
 
+FOVTangent = math.tan(math.radians(26))
+
 # f = open('dataFile', 'r+')
 
 last_time = time.time()*1000
@@ -24,7 +26,7 @@ for i in range(1000):
 		x,y,w,h = cv2.boundingRect(contours[0])
 		center = x + w/2
 # 		angle = (center - 640)*26/640
-		angle = math.degrees(math.atan((center - 320) * math.tan(math.radians(26)) / 320))
+		angle = math.degrees(math.atan((center - 320) * FOVTangent / 320))
 		table.putNumber("x", x)
 		table.putNumber("y", y)
 		table.putNumber("w", w)
