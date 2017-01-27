@@ -3,6 +3,10 @@ p = GripPipeline()
 
 import cv2
 import os
+import math
+
+FOVTangent = math.tan(math.radians(26))
+focalLength = 360/FOVTangent
 
 def initCamera():
 	os.system("v4l2-ctl -c exposure_auto=1 -c exposure_absolute=5")
@@ -24,7 +28,7 @@ for contour in p.filter_contours_output:
 	x,y,w,h = cv2.boundingRect(contour)
 	cv2.rectangle(image,(x,y),(x+w,y+h),(0,0,255),2)
 	center = x + w/2
-	angle = (center - 320)*26/320
+	angle = math.degrees(math.atan((center - 320) / focalLength))
 	print(angle)
 print(p.filter_contours_output)
 cv2.imwrite('image-contours.jpg', image)
