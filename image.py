@@ -6,7 +6,7 @@ import os
 import math
 
 FOVTangent = math.tan(math.radians(26))
-focalLength = 360/FOVTangent
+focalLength = 320/FOVTangent
 
 def initCamera():
 	os.system("v4l2-ctl -c exposure_auto=1 -c exposure_absolute=5")

@@ -13,7 +13,7 @@ import math
 import os
 
 FOVTangent = math.tan(math.radians(26))
-focalLength = 360/FOVTangent
+focalLength = 320/FOVTangent
 
 capture=None
 

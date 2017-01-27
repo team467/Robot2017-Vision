@@ -11,7 +11,7 @@ import math
 import os
 
 FOVTangent = math.tan(math.radians(26))
-focalLength = 360/FOVTangent
+focalLength = 320/FOVTangent
 
 def initCamera():
 	os.system("v4l2-ctl -c exposure_auto=1 -c exposure_absolute=5")
@@ -24,7 +24,7 @@ def initCamera():
 capture = None
 initCamera()
 last_time = time.time()*1000
-for i in range(1000):
+while True:
 	time.sleep(1.0/30)
 	res, image = capture.read()
 	p.process(image)
