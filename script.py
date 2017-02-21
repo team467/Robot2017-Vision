@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from grip import GripPipeline
 p = GripPipeline()
 
@@ -6,6 +8,7 @@ import time
 import math
 import os
 import statistics
+print("Completed Imports")
 
 FOVTangent = math.tan(math.radians(26))
 focalLength = 320/FOVTangent
@@ -16,17 +19,22 @@ def initCamera():
 	capture = cv2.VideoCapture(0)
 	capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640); 
 	capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480);
-	
+	print("Initialized Camera")
+
 from networktables import NetworkTables
 NetworkTables.initialize(server='roborio-467-frc.local')
 gyroTable = NetworkTables.getTable('Sensors on Pi')
+#NetworkTables.initialize(server='10.0.1.18') #Nathan's IP Address
 table = NetworkTables.getTable('SmartDashboard')
 time.sleep(1.0) # Give it time to start working
+table.putNumber("gyro", 0.0)
+print("Initialized Table")
 
 # f = open('dataFile', 'r+')
 capture = None
 initCamera()
 last_time = time.time()*1000
+print("Starting Loop")
 while True:
 	time.sleep(1.0/30)
 	gyro = gyroTable.getNumber("Y-Axis Angle") # reading at image (before latency)
@@ -49,7 +57,7 @@ while True:
 		table.putNumber("w", w)
 		table.putNumber("h", h)
 		table.putNumber("angle", gyro + angle)
-	print("Number of contours: {}".format(len(contours)))
+	#print("Number of contours: {}".format(len(contours)))
 # 	f.write('STEP: ' + str(p.find_contours_output) + '\n')
 	now = time.time()*1000
 # 	print(now-last_time)
