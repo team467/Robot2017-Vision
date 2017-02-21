@@ -19,6 +19,7 @@ def initCamera():
 	
 from networktables import NetworkTables
 NetworkTables.initialize(server='roborio-467-frc.local')
+gyroTable = NetworkTables.getTable('Sensors on Pi')
 table = NetworkTables.getTable('SmartDashboard')
 time.sleep(1.0) # Give it time to start working
 
@@ -28,7 +29,7 @@ initCamera()
 last_time = time.time()*1000
 while True:
 	time.sleep(1.0/30)
-	gyro = table.getNumber("gyro") # reading at image (before latency)
+	gyro = gyroTable.getNumber("Y-Axis Angle") # reading at image (before latency)
 	res, image = capture.read()
 	p.process(image)
 	contours = p.filter_contours_output
