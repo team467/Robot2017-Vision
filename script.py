@@ -32,6 +32,7 @@ while True:
 	res, image = capture.read()
 	p.process(image)
 	contours = p.filter_contours_output
+	table.putBoolean("seeTwo", len(contours) == 2)
 	if len(contours) == 2:
 		x1,y1,w1,h1 = cv2.boundingRect(contours[0])
 		x2,y2,w2,h2 = cv2.boundingRect(contours[1])
