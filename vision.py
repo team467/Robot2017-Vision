@@ -20,6 +20,9 @@ def initCamera():
 	capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640); 
 	capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480);
 	print("Initialized Camera")
+	
+def addVectors(v1, v2):
+	return [v1[0]+v2[0], v1[1]+v2[1]]
 
 from networktables import NetworkTables
 NetworkTables.initialize(server='roborio-467-frc.local')
@@ -33,6 +36,10 @@ print("Initialized Table")
 # f = open('dataFile', 'r+')
 capture = None
 initCamera()
+camToCenterWidth = table.getNumber("CamToCenterWidth")
+camToCenterLength = table.getNumber("CamToCenterLength")
+camToCenter = [-camToCenterWidth, camToCenterLength]
+
 last_time = time.time()*1000
 print("Starting Loop")
 while True:
@@ -63,13 +70,22 @@ while True:
 		yAvg = ySum / len(contours)
 		wAvg = wSum / len(contours)
 		hAvg = hSum / len(contours)
-		center = xAvg + wAvg/2
-		angle = math.degrees(math.atan((center - 320) / focalLength))
+		center = xAvg + wAvg/2 - 320
+		cameraAngle = math.degrees(math.atan(center / focalLength))
+		
+		dTarget = 3580/hAvg # Magic number calculated with experimentation
+		horizTarget = center * dTarget / focalLength
+		vDisplacement = addVectors([horizTarget, dTarget], camToCenter)
+		displacement = math.degrees(math.atan(vDisplacement[0]/vDisplacement[1]))
+# 		displacement = math.atan(camToCenterWidth/(dTarget + camToCenterLength))
+		
 		table.putNumber("x", xAvg)
 		table.putNumber("y", yAvg)
 		table.putNumber("w", wAvg)
 		table.putNumber("h", hAvg)
-		table.putNumber("angle", gyro + angle)
+		table.putNumber("distance", dTarget)
+		table.putNumber("angle", gyro + displacement)
+# 		table.putNumber("angle", gyro + cameraAngle + displacement)
 # 	if len(contours) == 2:
 # 		x1,y1,w1,h1 = cv2.boundingRect(contours[0])
 # 		x2,y2,w2,h2 = cv2.boundingRect(contours[1])
