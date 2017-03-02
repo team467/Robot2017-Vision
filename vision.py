@@ -25,7 +25,7 @@ from networktables import NetworkTables
 NetworkTables.initialize(server='roborio-467-frc.local')
 gyroTable = NetworkTables.getTable('Sensors on Pi')
 #NetworkTables.initialize(server='10.0.1.18') #Nathan's IP Address
-table = NetworkTables.getTable('SmartDashboard')
+table = NetworkTables.getTable('Vision Table')
 time.sleep(1.0) # Give it time to start working
 table.putNumber("gyro", 0.0)
 print("Initialized Table")
@@ -37,8 +37,10 @@ last_time = time.time()*1000
 print("Starting Loop")
 while True:
 	time.sleep(1.0/30)
+	
 	#gyro = gyroTable.getNumber("Y-Axis Angle") # reading at image (before latency)
 	gyro = table.getNumber("gyro")
+	
 	res, image = capture.read()
 	p.process(image)
 	contours = p.filter_contours_output
@@ -56,6 +58,7 @@ while True:
 		wSum = wSum + w
 		hSum = hSum + h
 	if (len(contours) > 0):
+	
 		xAvg = xSum / len(contours)
 		yAvg = ySum / len(contours)
 		wAvg = wSum / len(contours)
