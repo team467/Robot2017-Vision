@@ -38,6 +38,7 @@ capture = None
 initCamera()
 camToCenterWidth = table.getNumber("CamToCenterWidth")
 camToCenterLength = table.getNumber("CamToCenterLength")
+camToFront = 24
 camToCenter = [-camToCenterWidth, camToCenterLength]
 
 last_time = time.time()*1000
@@ -83,7 +84,7 @@ while True:
 		table.putNumber("y", yAvg)
 		table.putNumber("w", wAvg)
 		table.putNumber("h", hAvg)
-		table.putNumber("distance", dTarget)
+		table.putNumber("distance", dTarget - camToFront)
 		table.putNumber("angle", gyro + displacement)
 # 		table.putNumber("angle", gyro + cameraAngle + displacement)
 # 	if len(contours) == 2:
